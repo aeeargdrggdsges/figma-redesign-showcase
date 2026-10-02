@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Cloud Platform | Senior Figma Redesign & Design System</title>
+  <meta name="description" content="A simple, highly professional developer-first website redesign engineered with strict 8pt grid rhythm, clean typographic hierarchy, and production-ready design tokens.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            zinc: {
+              850: '#18181c',
+              950: '#09090b',
+            },
+            emerald: {
+              DEFAULT: '#10b981',
+              glow: 'rgba(16, 185, 129, 0.15)',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen">
+
+  <!-- 8px Grid Overlay for Dev Mode -->
+  <div class="dev-grid-overlay" id="devGridOverlay"></div>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow"></div>
+
+  <!-- Top Sticky Technical Control Bar -->
+  <header class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/80 px-4 lg:px-8 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center font-black text-black shadow-lg shadow-emerald-500/20">
+          ▲
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-sm tracking-tight text-white">APEX PLATFORM</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-emerald-400 border border-emerald-500/30">FIGMA DEV-SPEC V2.4</span>
+          </div>
+          <p class="text-[11px] text-zinc-400">Minimalist Redesign Case Study for Technical Evaluator</p>
+        </div>
+      </div>
+
+      <!-- View Modes Switcher -->
+      <div class="flex items-center p-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs">
+        <button id="viewProBtn" class="px-3 py-1.5 rounded-md font-medium transition-all bg-zinc-800 text-white shadow-sm flex items-center gap-1.5" onclick="switchView('pro')">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Redesigned Pro UI</span>
+        </button>
+        <button id="viewCompareBtn" class="px-3 py-1.5 rounded-md font-medium transition-all text-zinc-400 hover:text-white flex items-center gap-1.5" onclick="switchView('compare')">
+          <i data-lucide="split-square-vertical" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>Interactive Split Slider</span>
+        </button>
+        <button id="viewOldBtn" class="px-3 py-1.5 rounded-md font-medium transition-all text-zinc-400 hover:text-white flex items-center gap-1.5" onclick="switchView('old')">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Original Cluttered Layout</span>
+        </button>
+      </div>
+
+      <!-- Dev Mode & System Inspectors -->
+      <div class="flex items-center gap-2">
+        <button id="devModeToggle" onclick="toggleDevMode()" class="px-3 py-1.5 rounded-md text-xs font-mono border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 flex items-center gap-1.5 transition-colors">
+          <i data-lucide="ruler" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>Dev Mode: <strong id="devModeStatus" class="text-zinc-500">OFF</strong></span>
+        </button>
+        <button onclick="openTokenDrawer()" class="px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 flex items-center gap-1.5 transition-colors">
+          <i data-lucide="palette" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span>Design Tokens</span>
+        </button>
+        <button onclick="openMatrixModal()" class="px-3 py-1.5 rounded-md text-xs font-medium border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 flex items-center gap-1.5 transition-colors">
+          <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>UI Kit Matrix</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER 1: REDESIGNED PRO UI -->
+  <div id="proView" class="view-panel transition-opacity duration-300">
+    
+    <!-- Secondary Platform Subnav -->
+    <nav class="border-b border-zinc-900 bg-zinc-950/40 px-4 lg:px-8 py-2.5 text-xs text-zinc-400">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <a href="#features" class="hover:text-white transition-colors">Architecture</a>
+          <a href="#benchmarks" class="hover:text-white transition-colors">P99 Benchmarks</a>
+          <a href="#code" class="hover:text-white transition-colors">SDK Integrations</a>
+          <a href="#pricing" class="hover:text-white transition-colors">Transparent Pricing</a>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-mono">
+          <span class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Global Mesh: 100% Operational
+          </span>
+          <span class="text-zinc-600">|</span>
+          <span class="text-zinc-400">v3.2.0-stable</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-16 pb-20 px-4 lg:px-8 inspectable" data-spec="Section · Hero · 1280px max-width · 8pt Grid">
+      <div class="max-w-5xl mx-auto text-center">
+        
+        <!-- Status Pill -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-300 mb-8 hover:border-zinc-700 transition-colors cursor-pointer">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span class="font-mono text-emerald-400">v3.2 Released</span>
+          <span class="text-zinc-500">·</span>
+          <span>Zero-downtime distributed state engine</span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-zinc-500"></i>
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-[1.1] inspectable" data-spec="Typography · Display 72px · Bold 800 · Tracking -0.03em">
+          Engineered for speed.<br>
+          <span class="bg-gradient-to-r from-zinc-100 via-zinc-300 to-zinc-500 bg-clip-text text-transparent">
+            Built for developer sanity.
+          </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg sm:text-xl text-zinc-400 max-w-3xl mx-auto mb-10 font-normal leading-relaxed inspectable" data-spec="Typography · Body Large 20px · Regular 400 · Line-height 32px">
+          Eliminate cloud bloat. Apex provides a microsecond-latency compute layer with automatic regional replication, instant secrets management, and zero cold starts.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-16 inspectable" data-spec="Component · Auto-layout Row · Gap 16px">
+          <a href="#code" class="btn-primary">
+            <span>Start Free Cluster</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <button onclick="openTokenDrawer()" class="btn-secondary">
+            <i data-lucide="code-2" class="w-4 h-4 text-zinc-400"></i>
+            <span>Inspect Design Tokens</span>
+          </button>
+        </div>
+
+        <!-- Interactive Live Dashboard & Telemetry Window -->
+        <div class="glass-panel p-2 sm:p-4 text-left max-w-4xl mx-auto relative group inspectable" data-spec="Component · Glass Panel · Radius 16px · Border 1px Subtle">
+          
+          <!-- Window Header -->
+          <div class="flex items-center justify-between border-b border-zinc-800/80 pb-3 mb-4 px-2">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
+              <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
+              <span class="w-3 h-3 rounded-full bg-zinc-800"></span>
+              <span class="font-mono text-xs text-zinc-400 ml-2">apex-edge-gateway :: p99-telemetry.sock</span>
+            </div>
+            <div class="flex items-center gap-3 text-xs font-mono">
+              <span class="text-zinc-500">Region: <strong class="text-zinc-300">iad-1</strong></span>
+              <span class="badge-tech">
+                <span class="dot"></span>
+                ACTIVE
+              </span>
+            </div>
+          </div>
+
+          <!-- Real-Time Metrics Strip inside Card -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 font-mono text-xs">
+            <div class="bg-zinc-900/60 p-3 rounded-lg border border-zinc-800/60">
+              <div class="text-zinc-500 mb-1">P99 Latency</div>
+              <div class="text-base font-bold text-emerald-400 flex items-center gap-1">
+                <span>6.2ms</span>
+                <span class="text-[10px] text-emerald-500/80">(-1.4ms)</span>
+              </div>
+            </div>
+            <div class="bg-zinc-900/60 p-3 rounded-lg border border-zinc-800/60">
+              <div class="text-zinc-500 mb-1">Throughput</div>
+              <div class="text-base font-bold text-white">124,500 <span class="text-xs font-normal text-zinc-400">req/s</span></div>
+            </div>
+            <div class="bg-zinc-900/60 p-3 rounded-lg border border-zinc-800/60">
+              <div class="text-zinc-500 mb-1">Cold Start Time</div>
+              <div class="text-base font-bold text-cyan-400">0.00ms</div>
+            </div>
+            <div class="bg-zinc-900/60 p-3 rounded-lg border border-zinc-800/60">
+              <div class="text-zinc-500 mb-1">Packet Loss</div>
+              <div class="text-base font-bold text-white">0.000%</div>
+            </div>
+          </div>
+
+          <!-- Code Snippet Tabs -->
+          <div class="code-window">
+            <div class="code-header">
+              <div class="flex items-center gap-2">
+                <button class="px-2.5 py-1 text-xs rounded bg-zinc-800 text-zinc-100 font-medium" id="tabCurl" onclick="setSnippet('curl')">curl</button>
+                <button class="px-2.5 py-1 text-xs rounded hover:bg-zinc-800/50 text-zinc-400 hover:text-zinc-200" id="tabTs" onclick="setSnippet('ts')">TypeScript</button>
+                <button class="px-2.5 py-1 text-xs rounded hover:bg-zinc-800/50 text-zinc-400 hover:text-zinc-200" id="tabPy" onclick="setSnippet('py')">Python</button>
+              </div>
+              <button onclick="copySnippet()" class="text-xs text-zinc-400 hover:text-white flex items-center gap-1 font-mono">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span id="copySnippetBtnText">Copy</span>
+              </button>
+            </div>
+            <div class="code-body" id="codeContent">
+              <pre><code class="language-bash text-zinc-300">curl -X POST https://api.apex.cloud/v1/edge/deploy \
+  -H "Authorization: Bearer apex_live_9204bf491e0a" \
+  -H "Content-Type: application/json" \
+  -d '{"region": "global-mesh", "autoscale": {"min": 2, "max": 100}}'
+
+# Response (200 OK in 6.2ms)
+# {"status":"routed","cluster_id":"iad_e92a","nodes":8,"latency":"6.2ms"}</code></pre>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Metrics / Proof Bar -->
+    <section class="border-y border-zinc-900 bg-zinc-950/60 py-10 px-4 lg:px-8 inspectable" data-spec="Section · Metrics Ribbon · 8pt Grid">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono">
+        <div>
+          <div class="text-3xl font-extrabold text-white mb-1">99.999%</div>
+          <div class="text-xs text-zinc-400 uppercase tracking-wider font-sans">Guaranteed SLA Uptime</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-emerald-400 mb-1">&lt; 10ms</div>
+          <div class="text-xs text-zinc-400 uppercase tracking-wider font-sans">Global P99 Roundtrip</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-white mb-1">14.2B+</div>
+          <div class="text-xs text-zinc-400 uppercase tracking-wider font-sans">Daily Executions</div>
+        </div>
+        <div>
+          <div class="text-3xl font-extrabold text-cyan-400 mb-1">SOC 2</div>
+          <div class="text-xs text-zinc-400 uppercase tracking-wider font-sans">Type II Certified</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Features Section -->
+    <section id="features" class="py-24 px-4 lg:px-8 max-w-7xl mx-auto inspectable" data-spec="Section · Bento Grid · Auto-layout 24px Gap">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400 mb-3">Architectural Precision</h2>
+        <p class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Structured for high-throughput teams who refuse visual chaos.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Bento Card 1: Edge Routing (Span 7) -->
+        <div class="md:col-span-7 glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Bento 1 · Col-Span-7 · Padding 32px">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 mb-6">
+              <i data-lucide="network" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Autonomous Edge Mesh Routing</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+              Requests are dynamically routed to the topologically closest node with hardware-accelerated TLS termination and zero DNS resolution delay.
+            </p>
+          </div>
+          <div class="bg-zinc-900/80 border border-zinc-800/80 rounded-lg p-4 font-mono text-xs">
+            <div class="flex items-center justify-between text-zinc-400 mb-2">
+              <span>Active Edge Node PoPs</span>
+              <span class="text-emerald-400">128 Online</span>
+            </div>
+            <div class="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-emerald-400 h-full w-[94%] rounded-full"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-zinc-500 mt-2">
+              <span>North America (38)</span>
+              <span>Europe (44)</span>
+              <span>Asia Pacific (46)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: Zero-Config Secrets (Span 5) -->
+        <div class="md:col-span-5 glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Bento 2 · Col-Span-5 · Padding 32px">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-indigo-400 mb-6">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">End-to-End Encrypted Vault</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+              Hardware enclave encryption for environment secrets. Instant replication across active instances without container redeployments.
+            </p>
+          </div>
+          <div class="p-3 bg-zinc-900 border border-zinc-800 rounded-lg font-mono text-xs text-zinc-300 flex items-center justify-between">
+            <span class="text-zinc-400">$ apex secrets inject --all</span>
+            <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">SYNCED</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: Distributed Observability (Span 5) -->
+        <div class="md:col-span-5 glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Bento 3 · Col-Span-5 · Padding 32px">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400 mb-6">
+              <i data-lucide="activity" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Microsecond Span Tracing</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+              OpenTelemetry native tracing embedded directly into the TCP handshake. Trace memory consumption and database waterfalls effortlessly.
+            </p>
+          </div>
+          <div class="h-20 bg-zinc-900/60 border border-zinc-800/60 rounded-lg p-3 flex items-end gap-1.5">
+            <div class="flex-1 bg-zinc-800 h-[40%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-zinc-800 h-[65%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-zinc-800 h-[30%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-zinc-800 h-[85%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-zinc-800 h-[50%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-zinc-800 h-[95%] rounded-sm hover:bg-emerald-400 transition-colors"></div>
+            <div class="flex-1 bg-emerald-400 h-[70%] rounded-sm shadow-sm shadow-emerald-400/50"></div>
+          </div>
+        </div>
+
+        <!-- Bento Card 4: Multi-Cloud Failover (Span 7) -->
+        <div class="md:col-span-7 glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Bento 4 · Col-Span-7 · Padding 32px">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 mb-6">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Instant Multi-Cloud Heartbeat</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+              If an upstream cloud provider goes dark, traffic redirects in less than 35 milliseconds with warm cache preservation and zero dropped web sockets.
+            </p>
+          </div>
+          <div class="grid grid-cols-3 gap-3 font-mono text-xs">
+            <div class="p-3 bg-zinc-900/90 rounded border border-emerald-500/30 text-center">
+              <div class="text-emerald-400 font-bold">AWS</div>
+              <div class="text-[10px] text-zinc-400">Primary (US)</div>
+            </div>
+            <div class="p-3 bg-zinc-900/90 rounded border border-zinc-800 text-center">
+              <div class="text-zinc-300 font-bold">GCP</div>
+              <div class="text-[10px] text-zinc-400">Standby (EU)</div>
+            </div>
+            <div class="p-3 bg-zinc-900/90 rounded border border-zinc-800 text-center">
+              <div class="text-zinc-300 font-bold">Azure</div>
+              <div class="text-[10px] text-zinc-400">Standby (AP)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Transparent Pricing Matrix -->
+    <section id="pricing" class="py-20 px-4 lg:px-8 border-t border-zinc-900 bg-zinc-950/40 inspectable" data-spec="Section · Pricing · Clean Cards">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-xl mx-auto mb-14">
+          <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-emerald-400 mb-3">Straightforward Pricing</h2>
+          <p class="text-3xl font-bold text-white">No sales calls required. Predictable unit economics.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Tier 1 -->
+          <div class="glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Pricing Card 1 · Developer">
+            <div>
+              <div class="font-mono text-xs text-zinc-400 uppercase mb-2">Developer</div>
+              <div class="text-3xl font-black text-white mb-4">$0 <span class="text-sm font-normal text-zinc-500">/ forever</span></div>
+              <p class="text-xs text-zinc-400 mb-6">For personal projects, experimental edge functions, and CLI tooling.</p>
+              <ul class="space-y-3 text-xs text-zinc-300 mb-8">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Up to 100,000 requests/mo</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 3 Edge regions</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Community Discord support</li>
+              </ul>
+            </div>
+            <button class="btn-secondary w-full">Deploy Free</button>
+          </div>
+
+          <!-- Tier 2 (Highlighted) -->
+          <div class="glass-panel p-6 sm:p-8 flex flex-col justify-between border-emerald-500/40 shadow-lg shadow-emerald-500/5 relative inspectable" data-spec="Pricing Card 2 · Team (Featured)">
+            <span class="absolute -top-3 right-6 bg-emerald-400 text-zinc-950 text-[10px] font-bold font-mono px-2.5 py-0.5 rounded-full">POPULAR</span>
+            <div>
+              <div class="font-mono text-xs text-emerald-400 uppercase mb-2">Team Cloud</div>
+              <div class="text-3xl font-black text-white mb-4">$49 <span class="text-sm font-normal text-zinc-500">/ month</span></div>
+              <p class="text-xs text-zinc-400 mb-6">For production applications needing sub-10ms global delivery.</p>
+              <ul class="space-y-3 text-xs text-zinc-300 mb-8">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 10,000,000 requests/mo</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> All 128 Global Edge PoPs</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Automated secret rotation</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 99.99% Uptime Guarantee</li>
+              </ul>
+            </div>
+            <button class="btn-primary w-full">Start 14-Day Pro Trial</button>
+          </div>
+
+          <!-- Tier 3 -->
+          <div class="glass-panel p-6 sm:p-8 flex flex-col justify-between inspectable" data-spec="Pricing Card 3 · Enterprise">
+            <div>
+              <div class="font-mono text-xs text-zinc-400 uppercase mb-2">Dedicated Mesh</div>
+              <div class="text-3xl font-black text-white mb-4">$399 <span class="text-sm font-normal text-zinc-500">/ month</span></div>
+              <p class="text-xs text-zinc-400 mb-6">Isolated VPC clusters with custom SLA contracts and 24/7 dedicated SRE support.</p>
+              <ul class="space-y-3 text-xs text-zinc-300 mb-8">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Unlimited edge requests</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Private VPC peering</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 99.999% SLA Financial backing</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Dedicated Slack channel</li>
+              </ul>
+            </div>
+            <button class="btn-secondary w-full">Contact Engineering</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 bg-zinc-950 py-12 px-4 lg:px-8 text-xs text-zinc-500">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-6 h-6 rounded bg-zinc-800 flex items-center justify-center font-bold text-white text-xs">▲</div>
+          <span class="text-zinc-300 font-semibold">APEX CLOUD SYSTEMS</span>
+          <span>· Designed for high-performing technical teams</span>
+        </div>
+        <div class="flex items-center gap-6 font-mono text-[11px]">
+          <span class="text-zinc-400">Design System: 8pt Standard</span>
+          <span class="text-zinc-400">WCAG AA Compliant</span>
+          <span class="text-emerald-400">Figma Dev Mode Ready</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- MAIN CONTAINER 2: INTERACTIVE SPLIT COMPARISON SLIDER -->
+  <div id="compareView" class="view-panel hidden p-4 lg:p-8 max-w-7xl mx-auto">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>Side-by-Side Redesign Comparison</span>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-zinc-800 text-cyan-400 border border-cyan-500/30">Interactive Slider</span>
+        </h2>
+        <p class="text-xs text-zinc-400 mt-1">Drag the center cyan handle left or right to inspect the transformation from a cluttered legacy layout to the streamlined modern redesign.</p>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-mono">
+        <span class="text-amber-400">← Before (Cluttered Theme)</span>
+        <span class="text-zinc-500">|</span>
+        <span class="text-emerald-400">After (Clean Redesign) →</span>
+      </div>
+    </div>
+
+    <!-- The Slider Canvas -->
+    <div class="compare-container" id="sliderContainer">
+      
+      <!-- BEFORE SIDE (Background Underneath) -->
+      <div class="compare-before old-cluttered-ui">
+        <div class="old-banner">⚠️ SPECIAL LIMITED TIME OFFER! CLICK HERE TO REGISTER YOUR ACCOUNT NOW! ⚠️</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
+          <h2 style="color: #003366; margin: 0; font-family: 'Times New Roman', serif;">APEX CLOUD COMPUTING PORTAL (V1.0)</h2>
+          <div>
+            <button class="old-btn">Sign In</button>
+            <button class="old-btn" style="background: red; border-color: darkred;">Buy Now</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+          <div style="flex: 2;">
+            <h1 style="color: #111; font-size: 26px;">The Best Server Hosting In The World For Your Company</h1>
+            <p style="font-size: 13px; color: #555; line-height: 1.4;">
+              We offer fast server hosting with many features. Our servers are located in many data centers. You can host your website and databases with us. Please choose a package below. Low prices and good support.
+            </p>
+            <br>
+            <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; font-size: 12px; background: #fff;">
+              <tr style="background: #e2e8f0;">
+                <th>Package Name</th>
+                <th>Monthly Price</th>
+                <th>Disk Space</th>
+                <th>Bandwidth</th>
+                <th>Order</th>
+              </tr>
+              <tr>
+                <td>Starter Plan</td>
+                <td>$15 / mo</td>
+                <td>10 GB HDD</td>
+                <td>100 GB</td>
+                <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+              </tr>
+              <tr>
+                <td>Business Plan</td>
+                <td>$50 / mo</td>
+                <td>50 GB SSD</td>
+                <td>Unlimited</td>
+                <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+              </tr>
+              <tr>
+                <td>Enterprise Plan</td>
+                <td>$200 / mo</td>
+                <td>200 GB NVMe</td>
+                <td>Dedicated</td>
+                <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="flex: 1;">
+            <div class="old-card">
+              <h4 style="margin-top:0; color: #cc0000;">Why Choose Us?</h4>
+              <ul style="font-size: 12px; padding-left: 18px;">
+                <li>24/7 Telephone Support</li>
+                <li>Free cPanel License</li>
+                <li>MySQL 5.7 Database</li>
+                <li>Daily Backups (Extra $5)</li>
+                <li>99.9% Uptime Guarantee</li>
+              </ul>
+            </div>
+            <div class="old-card" style="background: #fff8e1;">
+              <h4 style="margin-top:0;">Customer Testimonial</h4>
+              <p style="font-size: 11px; font-style: italic;">"This hosting is very good for my personal website." - John D., Webmaster</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFTER SIDE (Clipped Foreground) -->
+      <div class="compare-after" id="afterSlider">
+        <div class="p-8 bg-zinc-950 min-h-full w-[1200px]">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span class="font-mono text-xs text-emerald-400 font-semibold">APEX REDESIGN · HIGH-END PRO</span>
+          </div>
+          <h1 class="text-4xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+            Engineered for speed.<br>
+            <span class="text-zinc-400">Built for developer sanity.</span>
+          </h1>
+          <p class="text-zinc-400 text-sm max-w-xl mb-8 leading-relaxed">
+            Eliminate cloud bloat. Apex provides a microsecond-latency compute layer with automatic regional replication and zero cold starts.
+          </p>
+          <div class="flex items-center gap-4 mb-8">
+            <button class="btn-primary">Start Free Cluster →</button>
+            <button class="btn-secondary">Explore Architecture</button>
+          </div>
+          <div class="grid grid-cols-3 gap-4 max-w-xl font-mono text-xs">
+            <div class="bg-zinc-900 p-3 rounded border border-zinc-800">
+              <div class="text-zinc-500">P99 Latency</div>
+              <div class="text-lg font-bold text-emerald-400">6.2ms</div>
+            </div>
+            <div class="bg-zinc-900 p-3 rounded border border-zinc-800">
+              <div class="text-zinc-500">SLA Uptime</div>
+              <div class="text-lg font-bold text-white">99.999%</div>
+            </div>
+            <div class="bg-zinc-900 p-3 rounded border border-zinc-800">
+              <div class="text-zinc-500">Global PoPs</div>
+              <div class="text-lg font-bold text-cyan-400">128 Nodes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAG HANDLE -->
+      <div class="compare-handle" id="sliderHandle">
+        <div class="compare-handle-knob">
+          <i data-lucide="chevrons-left-right" class="w-4 h-4 text-black"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- MAIN CONTAINER 3: ORIGINAL CLUTTERED THEME (STANDALONE) -->
+  <div id="oldView" class="view-panel hidden p-4 lg:p-8 max-w-5xl mx-auto">
+    <div class="mb-4 p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between">
+      <span>⚠️ This is the legacy, cluttered layout with inconsistent typography, harsh borders, and cognitive overload.</span>
+      <button onclick="switchView('pro')" class="px-3 py-1 rounded bg-amber-500 text-black font-bold">Switch to Redesign Pro</button>
+    </div>
+    
+    <div class="old-cluttered-ui rounded-lg shadow-xl">
+      <div class="old-banner">⚠️ SPECIAL LIMITED TIME OFFER! CLICK HERE TO REGISTER YOUR ACCOUNT NOW! ⚠️</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="color: #003366; margin: 0; font-family: 'Times New Roman', serif;">APEX CLOUD COMPUTING PORTAL (V1.0)</h2>
+        <div>
+          <button class="old-btn">Sign In</button>
+          <button class="old-btn" style="background: red; border-color: darkred;">Buy Now</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 2;">
+          <h1 style="color: #111; font-size: 26px;">The Best Server Hosting In The World For Your Company</h1>
+          <p style="font-size: 13px; color: #555; line-height: 1.4;">
+            We offer fast server hosting with many features. Our servers are located in many data centers. You can host your website and databases with us. Please choose a package below. Low prices and good support.
+          </p>
+          <br>
+          <table border="1" cellpadding="8" style="width: 100%; border-collapse: collapse; font-size: 12px; background: #fff;">
+            <tr style="background: #e2e8f0;">
+              <th>Package Name</th>
+              <th>Monthly Price</th>
+              <th>Disk Space</th>
+              <th>Bandwidth</th>
+              <th>Order</th>
+            </tr>
+            <tr>
+              <td>Starter Plan</td>
+              <td>$15 / mo</td>
+              <td>10 GB HDD</td>
+              <td>100 GB</td>
+              <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+            </tr>
+            <tr>
+              <td>Business Plan</td>
+              <td>$50 / mo</td>
+              <td>50 GB SSD</td>
+              <td>Unlimited</td>
+              <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+            </tr>
+            <tr>
+              <td>Enterprise Plan</td>
+              <td>$200 / mo</td>
+              <td>200 GB NVMe</td>
+              <td>Dedicated</td>
+              <td><button class="old-btn" style="padding: 4px 8px; font-size: 11px;">Buy</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="flex: 1;">
+          <div class="old-card">
+            <h4 style="margin-top:0; color: #cc0000;">Why Choose Us?</h4>
+            <ul style="font-size: 12px; padding-left: 18px;">
+              <li>24/7 Telephone Support</li>
+              <li>Free cPanel License</li>
+              <li>MySQL 5.7 Database</li>
+              <li>Daily Backups (Extra $5)</li>
+              <li>99.9% Uptime Guarantee</li>
+            </ul>
+          </div>
+          <div class="old-card" style="background: #fff8e1;">
+            <h4 style="margin-top:0;">Customer Testimonial</h4>
+            <p style="font-size: 11px; font-style: italic;">"This hosting is very good for my personal website." - John D., Webmaster</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- DRAWER: DESIGN TOKENS & SPECS -->
+  <div class="drawer-backdrop" id="tokenDrawer" onclick="closeDrawerOutside(event)">
+    <div class="drawer-content">
+      <div class="flex items-center justify-between pb-4 border-b border-zinc-800 mb-6">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="palette" class="w-4 h-4 text-indigo-400"></i>
+            <span>Design Tokens & Technical Specs</span>
+          </h3>
+          <p class="text-xs text-zinc-400">Strict 8pt rhythm, WCAG AA contrast, and semantic variables.</p>
+        </div>
+        <button onclick="closeTokenDrawer()" class="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Color Palette Tokens -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300">Semantic Color Tokens</h4>
+          <button onclick="copyTokensCSS()" class="text-[11px] font-mono text-emerald-400 hover:underline">Copy CSS Vars</button>
+        </div>
+        <div class="space-y-2 font-mono text-xs">
+          <div class="flex items-center justify-between p-2 rounded bg-zinc-900 border border-zinc-800">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded bg-[#09090b] border border-zinc-700"></span>
+              <span class="text-zinc-200">--bg-canvas</span>
+            </div>
+            <span class="text-zinc-500">#09090b (Zinc 950)</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded bg-zinc-900 border border-zinc-800">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded bg-[#121215] border border-zinc-700"></span>
+              <span class="text-zinc-200">--bg-surface</span>
+            </div>
+            <span class="text-zinc-500">#121215 (Zinc 900)</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded bg-zinc-900 border border-zinc-800">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded bg-[#10b981]"></span>
+              <span class="text-zinc-200">--accent-emerald</span>
+            </div>
+            <span class="text-emerald-400">#10b981 (WCAG 7.2:1)</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded bg-zinc-900 border border-zinc-800">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded bg-[#6366f1]"></span>
+              <span class="text-zinc-200">--accent-indigo</span>
+            </div>
+            <span class="text-indigo-400">#6366f1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typographic Scale -->
+      <div class="mb-8">
+        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300 mb-3">Typographic Scale (Inter 1.25 Ratio)</h4>
+        <div class="border border-zinc-800 rounded-lg overflow-hidden text-xs">
+          <table class="w-full text-left font-mono">
+            <thead class="bg-zinc-900 text-zinc-400 text-[11px] border-b border-zinc-800">
+              <tr>
+                <th class="p-2.5">Level</th>
+                <th class="p-2.5">Size / Line-Height</th>
+                <th class="p-2.5">Weight</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800 text-zinc-300">
+              <tr>
+                <td class="p-2.5 font-bold text-white">Display</td>
+                <td class="p-2.5">72px / 80px</td>
+                <td class="p-2.5">800 (ExtraBold)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">H1 (Hero)</td>
+                <td class="p-2.5">48px / 56px</td>
+                <td class="p-2.5">700 (Bold)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">H2 (Section)</td>
+                <td class="p-2.5">32px / 40px</td>
+                <td class="p-2.5">700 (Bold)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">H3 (Card)</td>
+                <td class="p-2.5">20px / 28px</td>
+                <td class="p-2.5">600 (SemiBold)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5">Body Large</td>
+                <td class="p-2.5">18px / 28px</td>
+                <td class="p-2.5">400 (Regular)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5">Body Base</td>
+                <td class="p-2.5">14px / 22px</td>
+                <td class="p-2.5">400 (Regular)</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 text-zinc-400">Caption / Code</td>
+                <td class="p-2.5">12px / 16px</td>
+                <td class="p-2.5">500 (Mono)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Spacing Scale 8-Point Grid -->
+      <div class="mb-6">
+        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300 mb-3">8-Point Spacing Grid</h4>
+        <div class="space-y-2 text-xs font-mono">
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">4px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 4px;"></div>
+            <span class="text-zinc-400 text-[11px]">Tight icon/badge padding</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">8px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 8px;"></div>
+            <span class="text-zinc-400 text-[11px]">Default gap unit (Base)</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">16px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 16px;"></div>
+            <span class="text-zinc-400 text-[11px]">Related element spacing</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">24px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 24px;"></div>
+            <span class="text-zinc-400 text-[11px]">Component card padding</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">32px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 32px;"></div>
+            <span class="text-zinc-400 text-[11px]">Major section padding</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-12 text-zinc-500">64px</span>
+            <div class="h-3 bg-cyan-400/80 rounded" style="width: 64px;"></div>
+            <span class="text-zinc-400 text-[11px]">Hero/Section division</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- MODAL: COMPONENT VARIANT MATRIX -->
+  <div class="drawer-backdrop" id="matrixModal" onclick="closeModalOutside(event)">
+    <div class="drawer-content !w-[680px]">
+      <div class="flex items-center justify-between pb-4 border-b border-zinc-800 mb-6">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+            <span>Interactive UI Component Matrix</span>
+          </h3>
+          <p class="text-xs text-zinc-400">All interactive states: Default, Hover, Focus, Active, and Disabled.</p>
+        </div>
+        <button onclick="closeMatrixModal()" class="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Button Variants -->
+      <div class="mb-8">
+        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300 mb-3">Button Variants & States</h4>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-4 space-y-4">
+          <div>
+            <div class="text-[11px] text-zinc-400 font-mono mb-2">Primary Action (White on Zinc-950)</div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="btn-primary">Default State</button>
+              <button class="btn-primary !bg-zinc-200">Hover State</button>
+              <button class="btn-primary !ring-2 !ring-emerald-400">Focus Ring</button>
+              <button class="btn-primary !opacity-40 cursor-not-allowed" disabled>Disabled</button>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-zinc-800">
+            <div class="text-[11px] text-zinc-400 font-mono mb-2">Secondary Subtle (Zinc-850 Surface)</div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="btn-secondary">Default</button>
+              <button class="btn-secondary !bg-zinc-800 !text-white">Hover</button>
+              <button class="btn-secondary !opacity-40 cursor-not-allowed" disabled>Disabled</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <div class="mb-8">
+        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300 mb-3">Input Fields & Validation</h4>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-4 space-y-3 font-mono text-xs">
+          <div>
+            <label class="block text-zinc-400 text-[11px] mb-1">API Key Name (Idle State)</label>
+            <input type="text" value="production-edge-token" class="w-full bg-zinc-950 border border-zinc-800 rounded-md px-3 py-2 text-zinc-200 focus:outline-none focus:border-zinc-600">
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-[11px] mb-1">Endpoint URL (Focused State)</label>
+            <input type="text" value="https://api.apex.cloud/v1/cluster" class="w-full bg-zinc-950 border border-emerald-500 rounded-md px-3 py-2 text-zinc-100 ring-2 ring-emerald-500/20 focus:outline-none">
+            <span class="text-[10px] text-emerald-400 mt-1 block">✓ Valid endpoint syntax detected</span>
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-[11px] mb-1">Region Port (Error State)</label>
+            <input type="text" value="port_8080_unbound" class="w-full bg-zinc-950 border border-red-500/80 rounded-md px-3 py-2 text-red-200 ring-2 ring-red-500/20 focus:outline-none">
+            <span class="text-[10px] text-red-400 mt-1 block">✗ Port conflict: address already in use</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Badges -->
+      <div>
+        <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-zinc-300 mb-3">Badges & Indicators</h4>
+        <div class="flex flex-wrap gap-3">
+          <span class="badge-tech"><span class="dot"></span> 200 OK</span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+            <i data-lucide="cpu" class="w-3 h-3"></i> 8 VCPU
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-mono">
+            <i data-lucide="shield" class="w-3 h-3"></i> ENCLAVE E2E
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 text-xs font-mono">
+            v3.2.0-STABLE
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-notice">Design tokens copied to clipboard!</div>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>
