@@ -93,6 +93,10 @@
           <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400"></i>
           <span>UI Kit Matrix</span>
         </button>
+        <button onclick="openProposalModal()" class="px-3 py-1.5 rounded-md text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 flex items-center gap-1.5 transition-colors shadow-sm shadow-emerald-500/20">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          <span>Bid Proposal</span>
+        </button>
       </div>
 
     </div>
@@ -877,6 +881,62 @@
             v3.2.0-STABLE
           </span>
         </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: CLIENT BID PROPOSAL -->
+  <div class="drawer-backdrop" id="proposalModal" onclick="closeProposalOutside(event)">
+    <div class="drawer-content !w-[640px]">
+      <div class="flex items-center justify-between pb-4 border-b border-zinc-800 mb-6">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
+            <span>Client Bid Proposal (Ready to Submit)</span>
+          </h3>
+          <p class="text-xs text-zinc-400">Customized for technical client requiring simple, professional Figma redesign.</p>
+        </div>
+        <button onclick="closeProposalModal()" class="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Live Metadata Strip -->
+      <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-mono mb-6">
+        <span class="text-zinc-400">Character Count: <strong class="text-emerald-400">1,392</strong> / max 1,500</span>
+        <button onclick="copyProposalText()" class="btn-primary !py-1 !px-3 !text-xs">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span id="copyProposalBtnText">Copy Full Proposal</span>
+        </button>
+      </div>
+
+      <!-- Proposal Content Card -->
+      <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-5 font-mono text-xs text-zinc-300 leading-relaxed whitespace-pre-wrap selection:bg-emerald-500/30 selection:text-emerald-200" id="proposalTextContent">Hello,
+
+I read your brief and respect your time—no generic fluff. As someone who designs for technical founders and developers, I understand that "simple and professional" does not mean boring; it means intentional visual hierarchy, disciplined 8pt spacing rhythm, and zero visual debt.
+
+To prove my standard upfront, I built a live interactive redesign prototype and design system:
+🔗 Live Prototype & Dev Spec: https://figma-redesign-showcase.vercel.app/
+
+What you will find in this demo:
+1. Interactive Before vs. After Slider: Demonstrates how an existing cluttered layout is systematically transformed into a clean, modern, high-contrast interface (Linear/Stripe caliber).
+2. Live "Figma Dev Mode" Inspector: Toggle 8pt grid alignment, inspect container boundaries, view typography scales (Inter 1.25 ratio), and check semantic color tokens with WCAG AA ratings.
+3. Dev-Ready Component Architecture: 100% Auto-layout, organized frame hierarchies, and full variant states (Default, Hover, Active, Focus, Disabled) ready for instant Tailwind or CSS implementation.
+
+Workflow:
+• Share your existing theme/layout and brand requirements.
+• Fast 48-72h turnaround on the complete high-fidelity Figma redesign.
+• Full Figma file handoff with organized styles, components, and responsive desktop/mobile frames.
+
+Ready to begin immediately. Let's connect.
+
+Best regards,
+Tejaans Bansal</div>
+
+      <div class="mt-6 flex items-center justify-between pt-4 border-t border-zinc-800 text-[11px] text-zinc-500 font-mono">
+        <span>Target: https://figma-redesign-showcase.vercel.app</span>
+        <span>Status: Validated & Ready</span>
       </div>
 
     </div>

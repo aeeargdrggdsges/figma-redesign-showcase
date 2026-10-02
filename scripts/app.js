@@ -239,6 +239,41 @@ function copyTokensCSS() {
   });
 }
 
+// Proposal Modal Handlers
+function openProposalModal() {
+  const modal = document.getElementById('proposalModal');
+  if (modal) {
+    modal.classList.add('active');
+    if (window.lucide) window.lucide.createIcons();
+  }
+}
+
+function closeProposalModal() {
+  const modal = document.getElementById('proposalModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function closeProposalOutside(e) {
+  if (e.target.id === 'proposalModal') {
+    closeProposalModal();
+  }
+}
+
+function copyProposalText() {
+  const content = document.getElementById('proposalTextContent');
+  if (!content) return;
+  navigator.clipboard.writeText(content.textContent.trim()).then(() => {
+    const btnText = document.getElementById('copyProposalBtnText');
+    if (btnText) {
+      btnText.textContent = 'Copied to Clipboard!';
+      setTimeout(() => {
+        btnText.textContent = 'Copy Full Proposal';
+      }, 2000);
+    }
+    showToast('Proposal text copied to clipboard!');
+  });
+}
+
 // Toast notification
 function showToast(msg) {
   const toast = document.getElementById('toast');
@@ -249,3 +284,4 @@ function showToast(msg) {
     toast.classList.remove('show');
   }, 2600);
 }
+
