@@ -1,0 +1,21 @@
+Hello,
+
+I read your brief and respect your time—no generic fluff. As someone who designs for technical founders and developers, I understand that "simple and professional" does not mean boring; it means intentional visual hierarchy, disciplined 8pt spacing rhythm, and zero visual debt.
+
+To prove my standard upfront, I built a live interactive redesign prototype and design system:
+🔗 Live Prototype & Dev Spec: https://figma-redesign-showcase.vercel.app/
+
+What you will find in this demo:
+1. Interactive Before vs. After Slider: Demonstrates how an existing cluttered layout is systematically transformed into a clean, modern, high-contrast interface (Linear/Stripe caliber).
+2. Live "Figma Dev Mode" Inspector: Toggle 8pt grid alignment, inspect container boundaries, view typography scales (Inter 1.25 ratio), and check semantic color tokens with WCAG AA ratings.
+3. Dev-Ready Component Architecture: 100% Auto-layout, organized frame hierarchies, and full variant states (Default, Hover, Active, Focus, Disabled) ready for instant Tailwind or CSS implementation.
+
+Workflow:
+• Share your existing theme/layout and brand requirements.
+• Fast 48-72h turnaround on the complete high-fidelity Figma redesign.
+• Full Figma file handoff with organized styles, components, and responsive desktop/mobile frames.
+
+Ready to begin immediately. Let's connect.
+
+Best regards,
+Tejaans Bansal
